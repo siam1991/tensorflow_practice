@@ -22,7 +22,7 @@ model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28, 28)),
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.fit(train_img, train_label, epochs=20)
 model.save('./model/fashion_mnist.h5')
-model.save('./weights/fashion_mnist/fashion_mnist')
+model.save_weights('./weights/fashion_mnist/fashion_mnist')
 evaluate = model.evaluate(test_img, test_label)
 print(evaluate)
 
@@ -39,7 +39,7 @@ model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28, 28)),
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.fit(train_img, train_label_onehot, epochs=20)
 model.save('./model/fashion_mnist_onehot.h5')
-model.save('./weights/fashion_mnist/fashion_mnist_onehot')
+model.save_weights('./weights/fashion_mnist_onehot/fashion_mnist_onehot')
 evaluate = model.evaluate(test_img, test_label_onehot)
 print(evaluate)
 

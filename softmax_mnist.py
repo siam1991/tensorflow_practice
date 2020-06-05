@@ -25,18 +25,18 @@ model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28, 28)),
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',metrics=['accuracy'])
 model.fit(x_train, y_train, epochs=20)
 model.save('./model/mnist.h5')
-model.save_weights('./model/mnist/mnist')
+model.save_weights('./weights/mnist/mnist')
 evaluate = model.evaluate(x_test, y_test)
 print(evaluate)
 
 """label 为onehot，loss使用categorical_crossentropy"""
-# y_train_onehot = tf.keras.utils.to_categorical(y_train)
-# y_test_onehot = tf.keras.utils.to_categorical(y_test)
-# model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28,28)),
-#                              tf.keras.layers.Dense(128, activation='relu'),
-#                              tf.keras.layers.Dense(10, activation='softmax')])
-# model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-# model.fit(x_train, y_train_onehot,epochs=20)
-# model.save_weights('./weights/mnist/mnist_onehot')
-# model.save('./model/mnist_onehot.h5')
-# evalute = model.evaluate(x_test, y_test_onehot)
+y_train_onehot = tf.keras.utils.to_categorical(y_train)
+y_test_onehot = tf.keras.utils.to_categorical(y_test)
+model = tf.keras.Sequential([tf.keras.layers.Flatten(input_shape=(28,28)),
+                             tf.keras.layers.Dense(128, activation='relu'),
+                             tf.keras.layers.Dense(10, activation='softmax')])
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.fit(x_train, y_train_onehot, epochs=20)
+model.save_weights('./weights/mnist_onehot/mnist_onehot')
+model.save('./model/mnist_onehot.h5')
+evalute = model.evaluate(x_test, y_test_onehot)
