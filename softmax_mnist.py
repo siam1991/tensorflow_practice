@@ -40,3 +40,13 @@ model.fit(x_train, y_train_onehot, epochs=20)
 model.save_weights('./weights/mnist_onehot/mnist_onehot')
 model.save('./model/mnist_onehot.h5')
 evalute = model.evaluate(x_test, y_test_onehot)
+
+"""函数式api"""
+input = tf.keras.Input(shape=(28,28))
+x0 = tf.keras.layers.Flatten()(input)
+x1 = tf.keras.layers.Dense(128, activation='relu')(x0)
+output = tf.keras.layers.Dense(10, activation='softmax')(x1)
+model2 = tf.keras.Model(inputs=input, outpus=output)
+print(model2.summary())
+model2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model2.fit(x_train, y_train, epochs=20, validation_data=(x_test, y_test))

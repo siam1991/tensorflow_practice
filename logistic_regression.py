@@ -27,7 +27,7 @@ model = tf.keras.Sequential([tf.keras.layers.Dense(4, input_shape=(15, ), activa
                              tf.keras.layers.Dense(1, activation='sigmoid')])
 print(model.summary())
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-history = model.fit(x, y, epochs=1000)
+history = model.fit(x, y, epochs=500)
 model.save('./model/credit.h5')
 model.save_weights('./weights/credit/credit')
 
@@ -35,3 +35,14 @@ print(history.history.keys())
 plt.plot(history.epoch, history.history['loss'])
 plt.plot(history.epoch, history.history['accuracy'])
 plt.show()
+
+"""函数式api"""
+input = tf.keras.Input(shape=(15, ))
+x0 = tf.keras.layers.Dense(4, activation='relu')(input)
+x1 = tf.keras.layers.Dense(4, activation='relu')(x0)
+output = tf.keras.layers.Dense(1, activation='sigmoid')(x1)
+model2 = tf.keras.Model(inputs=input, outputs=output)
+print(model2.summary())
+model2.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model2.fit(x, y, epochs=500)
+

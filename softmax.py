@@ -44,4 +44,12 @@ evaluate = model.evaluate(test_img, test_label_onehot)
 print(evaluate)
 
 
-
+"""函数式api"""
+input = tf.keras.Input(shape=(28,28))
+x0 = tf.keras.layers.Flatten()(input)
+x1 = tf.keras.layers.Dense(128, activation='relu')(x0)
+output = tf.keras.layers.Dense(10, activation='softmax')(x1)
+model2 = tf.keras.Model(inputs=input, outpus=output)
+print(model2.summary())
+model2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model2.fit(train_img, train_label, epochs=20, validation_data=(test_img, test_label))

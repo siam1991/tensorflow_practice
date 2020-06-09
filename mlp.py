@@ -26,8 +26,17 @@ predict_y = model.predict(test_x)
 print(predict_y)
 
 print(history.history.keys())
-plt.plot(history.epoch, history.history['loss'])
-plt.show()
+# plt.plot(history.epoch, history.history['loss'])
+# plt.show()
+
+"""函数式api"""
+input = tf.keras.Input(shape=(3, ))
+x0 = tf.keras.layers.Dense(10, activation='relu')(input)
+output = tf.keras.layers.Dense(1)(x0)
+model2 = tf.keras.Model(inputs=input, outputs=output)
+print(model2.summary())
+model2.compile(optimizer='adam', loss='mse', metrics=['mae'])
+model2.fit(x, y, epochs=1000)
 
 
 
