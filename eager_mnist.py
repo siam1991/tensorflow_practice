@@ -1,5 +1,6 @@
 import tensorflow as tf
-
+import os
+from datetime import datetime
 tf.executing_eagerly()
 
 (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.mnist.load_data()
@@ -34,6 +35,10 @@ train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy('train_accuracy')
 test_loss = tf.keras.metrics.Mean('test_loss')
 test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy('test_accuracy')
 
+log_dir = os.path.join('log', datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+train_writer = tf.summary.create_file_writer(log_dir+'/train')
+test_writer = tf.summary.create_file_writer(log_dir+'/test')
+
 
 def step_train(model, train_images, train_labels):
     with tf.GradientTape() as t:
@@ -57,9 +62,17 @@ def train():
         for batch, (train_images, train_labels) in enumerate(dataset):
             step_train(model, train_images, train_labels)
         print("epoch:{} loss:{} accuracy:{}".format(epoch, train_loss.result(), train_accuracy.result()))
+        train_writer.set_as_default()
+        tf.summary.scalar("train_loss", data=train_loss.result(), step=epoch)
+        tf.summary.scalar("train_accuracy", data=train_accuracy.result(), step=epoch)
+
         for batch, (test_images, test_labels) in enumerate(test_dataset):
             step_test(model, test_images, test_labels)
         print("epoch:{} loss:{} accuracy:{}".format(epoch, test_loss.result(), test_accuracy.result()))
+        test_writer.set_as_default()
+        tf.summary.scalar("test_loss", data=test_loss.result(), step=epoch)
+        tf.summary.scalar("test_accuracy", data=test_accuracy.result(), step=epoch)
+
         train_loss.reset_states()
         train_accuracy.reset_states()
         test_loss.reset_states()
